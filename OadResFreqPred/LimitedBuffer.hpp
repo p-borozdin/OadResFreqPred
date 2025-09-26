@@ -5,7 +5,7 @@
 namespace orfp
 {
 	/// <summary>
-	/// Представляет из себя буфер фиксированного размера из элементов типа Т.
+	/// Buffer with fixed capacity of elements of type T.
 	/// </summary>
 	template<class T>
 	class LimitedBuffer final {
@@ -19,9 +19,9 @@ namespace orfp
 		LimitedBuffer& operator=(LimitedBuffer&&) = delete;
 
 		/// <summary>
-		/// Добавляет элемент в конец буфера, вытесняя элемент из начала буфера.
-		/// Т.е. более новые элементы вытесняют более старые элементы.
-		/// Принимает params -- параметры конструктора элемента.
+		/// Adds element to the end of the buffer.
+		/// That is, the newer elements replace the elder elements.
+		/// Takes 'params' -- parameters for the elements constructor.
 		/// </summary>
 		template <class... TArgs>
 		void add(TArgs&&... params)
@@ -41,8 +41,8 @@ namespace orfp
 		}
 
 		/// <summary>
-		/// Возвращает указатель на данные в буфере, если он заполнен. Иначе бросает исключение.
-		/// Данные идут в порядке от более поздних в более ранним.
+		/// Returns the pointer to data if the buffer is filled. Else, an exception is thrown.
+		/// Data go in order from elder to newer added elements.
 		/// </summary>
 		T* data() 
 		{ 
@@ -55,7 +55,8 @@ namespace orfp
 		}
 
 		/// <summary>
-		/// true если буфер заполнен, иначе false.
+		/// Checks whether the buffer filled or not.
+		/// Recommended to be checked before calling LimitedBuffer::data().
 		/// </summary>
 		bool isFilled() const { return m_size == m_buffer.capacity(); }
 

@@ -7,21 +7,21 @@ namespace orfp
 	class FrequencyPredictingModel final {
 	public:
 		/// <summary>
-		/// Создает модель для предсказания резонансной частоты.
+		/// Creates model for resonance frequency prediction.
 		/// </summary>
-		/// <param name="modelPath">-- путь до *.onnx файла с моделью. </param>
-		/// <param name="seqLen">-- гиперпараметр seq_len. </param>
+		/// <param name="modelPath">-- path to *.onnx file with a model. </param>
+		/// <param name="seqLen">-- hyperparameters seq_len. </param>
 		FrequencyPredictingModel(const wchar_t* modelPath, int64_t seqLen);
 
 		/// <summary>
-		/// Делает предсказание для резонансной частоты.
+		/// Predicts resonance frequency.
 		/// </summary>
-		/// <param name="time">-- отметка времени. </param>
-		/// <param name="temperature">-- температура в момент времени time. </param>
-		/// <returns> Предсказанная частота. Обратите внимание, что 
-		/// (1) сначала модель будет заполнять внутренний буфер для подсчета градиента dT/dt; 
-		/// (2) затем модель будет заполнять внутренний буфер для LSTM ячейки; 
-		/// и только после этого она будет выдавать предсказания. Пока буферы не будут заполнены, модель будет выдавать значение 0. </returns>
+		/// <param name="time">-- timestamp in seconds. </param>
+		/// <param name="temperature">-- temperature in Celsius at the given time. </param>
+		/// <returns> Predicted frequency. Note that
+		/// (1) at first, the buffer for the temperature gradient (dT/dt) will be filling;
+		/// (2) then, the internal LSTM buffer will be filling; 
+		/// and only after that the model will give predicted frequency. Until the buffers are filled, the model will return 0. </returns>
 		float predict(float time, float temperature);
 
 	private:
