@@ -47,3 +47,5 @@
 /x64/Debug
 /Main/x64/Debug
 *.user
+/onnx_export/my_venv
+**/__pycache__/**/*
