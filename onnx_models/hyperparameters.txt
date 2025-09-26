@@ -1,0 +1,3 @@
+LSTM+LR seq_len = 4
+LSTM+FFNN seq_len = 8
+LSTM+SA seq_len = 7
