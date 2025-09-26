@@ -23,12 +23,28 @@ namespace
 	{
 		return output * 1000.0f;
 	}
+
+	const wchar_t* stringToWcharPtr(const std::string& string)
+	{
+		size_t requiredSize = 0;
+		mbstowcs_s(&requiredSize, nullptr, 0, string.c_str(), _TRUNCATE);
+
+		if (requiredSize == 0)
+		{
+			return nullptr;
+		}
+
+		wchar_t* wideCharPtr = new wchar_t[requiredSize];
+		mbstowcs_s(&requiredSize, wideCharPtr, requiredSize, string.c_str(), _TRUNCATE);
+		return wideCharPtr;
+	}
 }
 
-FrequencyPredictingModel::FrequencyPredictingModel(const wchar_t* modelPath, int64_t seqLen) :
+FrequencyPredictingModel::FrequencyPredictingModel(const std::string& modelPath, int64_t seqLen) :
+	m_modelPath(stringToWcharPtr(modelPath)),
 	m_seqLen(seqLen),
 	m_inputShape({1, seqLen, 2}),
-	m_session(Ort::Env(), modelPath, Ort::SessionOptions()),
+	m_session(Ort::Env(), m_modelPath, Ort::SessionOptions()),
 	m_memoryInfo(Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault)),
 	m_timeBuffer(WINDOW_SIZE),
 	m_temperatureBuffer(WINDOW_SIZE),

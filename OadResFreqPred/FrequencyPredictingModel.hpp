@@ -11,7 +11,9 @@ namespace orfp
 		/// </summary>
 		/// <param name="modelPath">-- path to *.onnx file with a model. </param>
 		/// <param name="seqLen">-- hyperparameters seq_len. </param>
-		FrequencyPredictingModel(const wchar_t* modelPath, int64_t seqLen);
+		FrequencyPredictingModel(const std::string& modelPath, int64_t seqLen);
+
+		~FrequencyPredictingModel() { delete m_modelPath; }
 
 		/// <summary>
 		/// Predicts resonance frequency.
@@ -25,6 +27,7 @@ namespace orfp
 		float predict(float time, float temperature);
 
 	private:
+		const wchar_t* m_modelPath{ nullptr };
 		size_t m_seqLen{};
 		std::vector<int64_t> m_inputShape{};
 		Ort::Session m_session;
