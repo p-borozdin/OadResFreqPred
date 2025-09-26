@@ -39,3 +39,11 @@
 
 # debug information files
 *.dwo
+
+/.vs/OadResFreqPred
+/OadResFreqPred/git_repo/.vs
+/OadResFreqPred/x64/Debug
+/packages/Microsoft.ML.OnnxRuntime.1.22.1
+/x64/Debug
+/Main/x64/Debug
+*.user
