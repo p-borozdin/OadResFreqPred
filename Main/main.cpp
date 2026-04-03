@@ -6,10 +6,11 @@ using namespace orfp;
 
 int main()
 {
-	std::string modelPath = "..\\onnx_models\\lstm_sa.onnx";
-	const int64_t seqLen = 7;
+	std::string modelPath = "..\\onnx_models\\lstm_ffnn_shift_version.onnx";
+	const int64_t seqLen = 8;
+	const float default_shift = 0.0f;
 
-	auto model = FrequencyPredictingModel(modelPath, seqLen);
+	auto model = FrequencyPredictingModel(modelPath, seqLen, default_shift);
 
 	std::ifstream timeFile("..\\test_input\\time.txt");
 	std::ifstream temperatureFile("..\\test_input\\temperature.txt");

@@ -40,9 +40,10 @@ namespace
 	}
 }
 
-FrequencyPredictingModel::FrequencyPredictingModel(const std::string& modelPath, int64_t seqLen) :
+FrequencyPredictingModel::FrequencyPredictingModel(const std::string& modelPath, int64_t seqLen, float default_shift) :
 	m_modelPath(stringToWcharPtr(modelPath)),
 	m_seqLen(seqLen),
+	m_defaultShift(default_shift),
 	m_inputShape({1, seqLen, 2}),
 	m_session(Ort::Env(), m_modelPath, Ort::SessionOptions()),
 	m_memoryInfo(Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault)),
@@ -66,9 +67,15 @@ float FrequencyPredictingModel::predict(float time, float temperature)
 		return 0.0f;
 	}
 
-	float temperatureGrad = _impl::compute_derivative_by_linear_fit(m_timeBuffer.data(), m_temperatureBuffer.data(), WINDOW_SIZE);
+	float temperatureGrad = _impl::compute_derivative_by_linear_fit(
+		m_timeBuffer.data(),
+		m_temperatureBuffer.data(),
+		WINDOW_SIZE
+	);
 
-	float temperatureNormalized = normalize(temperature, TEMPERATURE_MEAN, TEMPERATURE_STD);
+	float temperature_shifted = temperature + m_defaultShift;
+
+	float temperatureNormalized = normalize(temperature_shifted, TEMPERATURE_MEAN, TEMPERATURE_STD);
 	float temperatureGradNormalized = normalize(temperatureGrad, TEMPERATURE_GRADIENT_MEAN, TEMPERATURE_GRADIENT_STD);
 
 	m_inputBuffer.add(temperatureNormalized, temperatureGradNormalized);
@@ -93,4 +100,9 @@ float FrequencyPredictingModel::predictInternal()
 	const float* pOutputData = outputTensors[0].GetTensorData<float>();
 
 	return restoreOutput(*pOutputData);
+}
+
+float FrequencyPredictingModel::getShift() const
+{
+    return m_defaultShift;
 }

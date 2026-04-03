@@ -11,7 +11,7 @@ namespace orfp
 		/// </summary>
 		/// <param name="modelPath">-- path to *.onnx file with a model. </param>
 		/// <param name="seqLen">-- hyperparameters seq_len. </param>
-		FrequencyPredictingModel(const std::string& modelPath, int64_t seqLen);
+		FrequencyPredictingModel(const std::string& modelPath, int64_t seqLen, float default_shift = 0.0f);
 
 		~FrequencyPredictingModel() { delete m_modelPath; }
 
@@ -25,10 +25,12 @@ namespace orfp
 		/// (2) then, the internal LSTM buffer will be filling; 
 		/// and only after that the model will give predicted frequency. Until the buffers are filled, the model will return 0. </returns>
 		float predict(float time, float temperature);
+		float getShift() const;
 
 	private:
 		const wchar_t* m_modelPath{ nullptr };
 		size_t m_seqLen{};
+		float m_defaultShift{0.0f};
 		std::vector<int64_t> m_inputShape{};
 		Ort::Session m_session;
 		Ort::MemoryInfo m_memoryInfo;

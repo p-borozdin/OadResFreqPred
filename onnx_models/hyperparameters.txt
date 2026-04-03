@@ -1,3 +1,4 @@
 LSTM+LR seq_len = 4
 LSTM+FFNN seq_len = 8
 LSTM+SA seq_len = 7
+lstm_ffnn_shift_version seq_len = 8
