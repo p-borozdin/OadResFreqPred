@@ -35,6 +35,11 @@ namespace orfp
 		Ort::Session m_session;
 		Ort::MemoryInfo m_memoryInfo;
 
+		static constexpr float INTERPOLATION_INTERVAL = 2.0f;
+		static constexpr size_t GRADIENT_WINDOW_SIZE = 15;
+
+		static constexpr size_t RAW_BUFFER_SIZE = 40;
+
 		LimitedBuffer<float> m_timeBuffer;
 		LimitedBuffer<float> m_temperatureBuffer;
 
@@ -44,6 +49,9 @@ namespace orfp
 		};
 
 		LimitedBuffer<model_input> m_inputBuffer;
+
+		float interpolateTemperatureAt(float target_time) const;
+		float computeGradientAt(float center_time) const;
 
 		float predictInternal();
 	};
