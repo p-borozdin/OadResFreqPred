@@ -54,6 +54,15 @@ namespace orfp
 			return m_buffer.data(); 
 		}
 
+		const T* data() const
+		{
+			if (!isFilled())
+			{
+				throw std::exception("Unable to get data from buffer that isn't filled yet");
+			}
+			return m_buffer.data();
+		}
+
 		/// <summary>
 		/// Checks whether the buffer filled or not.
 		/// Recommended to be checked before calling LimitedBuffer::data().
