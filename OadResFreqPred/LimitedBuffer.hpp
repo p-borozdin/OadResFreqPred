@@ -48,7 +48,7 @@ namespace orfp
 		{ 
 			if (!isFilled()) 
 			{
-				throw std::exception("Unable to get data from buffer that isn't filled yet");
+				throw std::runtime_error("Unable to get data from buffer that isn't filled yet");
 			}
 
 			return m_buffer.data(); 
@@ -58,7 +58,7 @@ namespace orfp
 		{
 			if (!isFilled())
 			{
-				throw std::exception("Unable to get data from buffer that isn't filled yet");
+				throw std::runtime_error("Unable to get data from buffer that isn't filled yet");
 			}
 			return m_buffer.data();
 		}
