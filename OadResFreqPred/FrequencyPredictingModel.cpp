@@ -56,7 +56,7 @@ FrequencyPredictingModel::FrequencyPredictingModel(
 {
 	if (seqLen <= 0)
 	{
-		throw std::exception("Parameter 'seqLen' must be greater than 0");
+		throw std::runtime_error("Parameter 'seqLen' must be greater than 0");
 	}
 }
 
