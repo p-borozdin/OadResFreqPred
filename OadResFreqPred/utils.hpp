@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef> // for size_t
 
 namespace orfp // OadResFreqPred namespace
 {
